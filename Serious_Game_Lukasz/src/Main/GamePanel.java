@@ -1,5 +1,9 @@
 package Main;
 
+import Block.BlockHandler;
+import MiniMazeGame.MazeGameHome;
+import MiniPatternGame.PatternGameHome;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -18,6 +22,7 @@ public class GamePanel extends JPanel implements Runnable{
     //FPS
     int FPS = 60;
 
+    BlockHandler blockHandler = new BlockHandler(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
 
@@ -26,12 +31,18 @@ public class GamePanel extends JPanel implements Runnable{
     int playerY = 100; 
     int playerSpeed = 4;
 
+    int enterMiniGame1 = 0;
+    int enterMiniGame2 = 0;
+
+
     public GamePanel(){
         this.setPreferredSize(new Dimension(screenWidth,screenHeight));
         this.setBackground(Color.BLACK);
         this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.addKeyListener(keyH);
+
+        blockHandler.blockImage();
     }
 
     public void startGameThread(){
@@ -83,17 +94,59 @@ public class GamePanel extends JPanel implements Runnable{
             playerX += playerSpeed;
         }
 
-        //ГРАНИЦИ МАПИ
+
         playerX = Math.max(0, Math.min(playerX, 720));
         playerY = Math.max(0, Math.min(playerY, 526));
+
+        if (playerX == 0 && playerY > 133 && playerY < 155){
+            System.out.println("GRA1");
+            enterMiniGame1 = 1;
+            if (keyH.ePressed){
+                startMiniGame1();
+                keyH.ePressed = false; //żeby nie otwierac miliona okien
+            }
+        } else {
+            enterMiniGame1 =0;
+        }
+
+        if (playerY == 526 && playerX > 476 && playerX < 488){
+            System.out.println("GRA2");
+            enterMiniGame2 = 1;
+            if (keyH.ePressed){
+                startMiniGame2();
+                keyH.ePressed = false; //żeby nie otwierac miliona okien
+            }
+        } else {
+            enterMiniGame2 =0;
+        }
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         Graphics2D g2 = (Graphics2D)g;
+
+        blockHandler.draw(g2);
+
         g2.setColor(Color.BLUE);
         g2.fillOval(playerX, playerY, tileSize, tileSize);
         g2.dispose();
+    }
+
+    public void startMiniGame1(){
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        new MazeGameHome(parentFrame);
+    }
+
+    public void startMiniGame2(){
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        new PatternGameHome(parentFrame);
+    }
+
+    public int getEnterMiniGame1(){
+        return enterMiniGame1;
+    }
+
+    public int getEnterMiniGame2(){
+        return enterMiniGame2;
     }
 }
