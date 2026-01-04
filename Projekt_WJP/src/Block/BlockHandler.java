@@ -58,9 +58,19 @@ public class BlockHandler {
         g2.setColor(Color.BLACK);
         g2.fillRect(gp.tileSize * 10,gp.tileSize * 11,gp.tileSize,gp.tileSize);
 
-        if (gp.getEnterMiniGame2() == 1){
+        if (gp.getEnterMiniGame2() == 1) {
             g2.setColor(Color.RED);
-            g2.fillRect(gp.tileSize * 10,gp.tileSize * 11,gp.tileSize,gp.tileSize);
+            g2.fillRect(gp.tileSize * 10, gp.tileSize * 11, gp.tileSize, gp.tileSize);
         }
+
+        g2.setColor(Color.BLACK);
+        g2.fillRect(gp.tileSize * 15,gp.tileSize * 5,gp.tileSize,gp.tileSize);
+
+        if (gp.getEnterMiniGame3() == 1) {
+            g2.setColor(Color.RED);
+            g2.fillRect(gp.tileSize * 15, gp.tileSize * 5, gp.tileSize, gp.tileSize);
+        }
+
+
     }
 }

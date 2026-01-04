@@ -2,6 +2,7 @@ package Main;
 
 import Block.BlockHandler;
 import MiniMazeGame.MazeGameHome;
+import MiniMemoryGame.MemoryGameHome;
 import MiniPatternGame.PatternGameHome;
 
 import javax.swing.*;
@@ -33,6 +34,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     int enterMiniGame1 = 0;
     int enterMiniGame2 = 0;
+    int enterMiniGame3 = 0;
 
 
     public GamePanel(){
@@ -98,8 +100,10 @@ public class GamePanel extends JPanel implements Runnable{
         playerX = Math.max(0, Math.min(playerX, 720));
         playerY = Math.max(0, Math.min(playerY, 526));
 
+
+        //GRA 1
         if (playerX == 0 && playerY > 133 && playerY < 155){
-            System.out.println("GRA1");
+            //System.out.println("GRA1");
             enterMiniGame1 = 1;
             if (keyH.ePressed){
                 startMiniGame1();
@@ -109,7 +113,8 @@ public class GamePanel extends JPanel implements Runnable{
             enterMiniGame1 =0;
         }
 
-        if (playerY == 526 && playerX > 476 && playerX < 488){
+        //GRA 2
+        if (playerY == 526 && playerX > 474 && playerX < 490){
             //System.out.println("GRA2");
             enterMiniGame2 = 1;
             if (keyH.ePressed){
@@ -118,6 +123,18 @@ public class GamePanel extends JPanel implements Runnable{
             }
         } else {
             enterMiniGame2 =0;
+        }
+
+        //GRA 3
+        if (playerX == 720 && playerY > 230 && playerY < 252){
+            //System.out.println("GRA3");
+            enterMiniGame3 = 1;
+            if (keyH.ePressed){
+                startMiniGame3();
+                keyH.ePressed = false; //żeby nie otwierac miliona okien
+            }
+        } else {
+            enterMiniGame3 =0;
         }
     }
 
@@ -142,11 +159,20 @@ public class GamePanel extends JPanel implements Runnable{
         new PatternGameHome(parentFrame);
     }
 
+    public void startMiniGame3(){
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        new MemoryGameHome(parentFrame);
+    }
+
     public int getEnterMiniGame1(){
         return enterMiniGame1;
     }
 
     public int getEnterMiniGame2(){
         return enterMiniGame2;
+    }
+
+    public int getEnterMiniGame3(){
+        return enterMiniGame3;
     }
 }
