@@ -12,6 +12,7 @@ public class MemoryGameHome extends JDialog {
     JLabel instructionLabel;
     JButton back;
     JButton start;
+    JButton score;
 
 
     JRadioButton easyRadio;
@@ -48,10 +49,21 @@ public class MemoryGameHome extends JDialog {
         leftPanel.add(back);
 
 
-        JPanel rightPanel = new JPanel();
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 25));
+
         rightPanel.setOpaque(false);
         rightPanel.setPreferredSize(new Dimension(180, 100));
 
+        score = new JButton("Scores");
+        score.setOpaque(true);
+        score.setBorderPainted(false);
+        score.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        score.setBackground(new Color(200,200,200));
+        score.setForeground(Color.BLACK);
+        score.setPreferredSize(new Dimension(140, 55));
+        score.setFocusable(false);
+
+        rightPanel.add(score);
 
         titleLabel = new JLabel("KOLORY", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 50));

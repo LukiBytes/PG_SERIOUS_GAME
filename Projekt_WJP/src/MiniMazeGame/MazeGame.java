@@ -28,11 +28,16 @@ public class MazeGame extends JDialog {
     private int offsetX;
     private int offsetY;
 
+    //TODO moze da sie jakos lepiej nie wiem nie chce mi sie XD
+    private int difficultyToSave;
+
     public MazeGame(JFrame parent, int difficulty) {
         super(parent, "Labirynt - Gra", true);
 
-        int mazeWidth, mazeHeight;
+        difficultyToSave = difficulty;
 
+        int mazeWidth, mazeHeight;
+        difficultyToSave = difficulty;
         switch (difficulty) {
             case 1:
                 mazeWidth = 10;
@@ -270,4 +275,16 @@ public class MazeGame extends JDialog {
             dispose();
         });
     }
+
+
+    //Metody do przekazania wyniku i trudności do pliku
+    public int getSeconds(){
+        return seconds;
+    }
+
+    //TODO Moze da sie lepiej
+    public int getDifficultyToSave(){
+        return difficultyToSave;
+    }
+
 }
