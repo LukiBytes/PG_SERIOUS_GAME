@@ -1,7 +1,14 @@
 package MiniMazeGame;
 
+import MiniPatternGame.PatternGame;
+import ModelScore.EntryScore;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MazeGameHome extends JDialog {
 
@@ -19,6 +26,8 @@ public class MazeGameHome extends JDialog {
     JRadioButton mediumRadio;
     JRadioButton hardRadio;
     ButtonGroup difficultyGroup;
+
+    public static List<EntryScore> scores = new ArrayList<>();
 
     public MazeGameHome(JFrame parent){
         super(parent, "Labirynt", true);
@@ -53,6 +62,23 @@ public class MazeGameHome extends JDialog {
 
         rightPanel.setOpaque(false);
         rightPanel.setPreferredSize(new Dimension(180, 100));
+
+        score = new JButton("Scores");
+        score.setOpaque(true);
+        score.setBorderPainted(false);
+        score.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        score.setBackground(new Color(200,200,200));
+        score.setForeground(Color.BLACK);
+        score.setPreferredSize(new Dimension(140, 55));
+        score.setFocusable(false);
+        score.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ModelScore.ScoreView(parent, MazeGameHome.scores);
+            }
+        });
+
+        rightPanel.add(score);
 
         score = new JButton("Scores");
         score.setOpaque(true);
@@ -150,8 +176,8 @@ public class MazeGameHome extends JDialog {
 
 
         start.addActionListener(e -> {
-            int difficulty;
 
+            int difficulty;
             if (easyRadio.isSelected()) {
                 difficulty = 1;
             } else if (mediumRadio.isSelected()) {

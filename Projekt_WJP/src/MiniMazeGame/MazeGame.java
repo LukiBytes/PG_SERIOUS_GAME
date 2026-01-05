@@ -1,8 +1,11 @@
 package MiniMazeGame;
 
+import ModelScore.EntryScore;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,6 +30,7 @@ public class MazeGame extends JDialog {
 
     private int offsetX;
     private int offsetY;
+
 
     //TODO moze da sie jakos lepiej nie wiem nie chce mi sie XD
     private int difficultyToSave;
@@ -265,26 +269,43 @@ public class MazeGame extends JDialog {
 
 
     private void showVictory() {
-        SwingUtilities.invokeLater(() -> {
-            JOptionPane.showMessageDialog(
+        if (gameWon) {
+            // Tworzymy panel z JLabel i JTextField
+            JPanel panel = new JPanel(new BorderLayout(5,5));
+            JLabel label = new JLabel("Podaj swoje imię:");
+            JTextField nameField = new JTextField(15);
+            panel.add(label, BorderLayout.NORTH);
+            panel.add(nameField, BorderLayout.CENTER);
+
+            // Dialog z opcjami Tak/Nie
+            int choice = JOptionPane.showConfirmDialog(
                     this,
-                    "Gratulacje!\n\nUkończyłeś labirynt w " + seconds + " sekund!",
-                    "Zwycięstwo",
-                    JOptionPane.INFORMATION_MESSAGE
+                    panel,
+                    "Czy chcesz zapisać wynik?",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
             );
+
+            if (choice == JOptionPane.YES_OPTION) {
+                String playerName = nameField.getText().trim();
+
+                if (playerName.isEmpty()) {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Imię nie może być puste!",
+                            "Błąd",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    return;
+                }
+
+                // Zapisujemy wynik do listy (tak jak w PatternGame)
+                MazeGameHome.scores.add(new EntryScore(playerName, seconds, difficultyToSave));
+                JOptionPane.showMessageDialog(this, "Wynik zapisany!");
+            }
+
+            // Zamykamy okno gry
             dispose();
-        });
+        }
     }
-
-
-    //Metody do przekazania wyniku i trudności do pliku
-    public int getSeconds(){
-        return seconds;
-    }
-
-    //TODO Moze da sie lepiej
-    public int getDifficultyToSave(){
-        return difficultyToSave;
-    }
-
 }

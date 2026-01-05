@@ -82,4 +82,8 @@ public class Pattern {
     public boolean checkAnswer(int selectedIndex) {
         return selectedIndex == correctAnswerIndex;
     }
+
+    public int getDifficulty(){
+        return difficulty;
+    }
 }

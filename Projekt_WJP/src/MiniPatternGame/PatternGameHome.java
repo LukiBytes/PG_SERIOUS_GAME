@@ -1,7 +1,13 @@
 package MiniPatternGame;
 
+import ModelScore.EntryScore;
+import ModelScore.ScoreView;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
 
 public class PatternGameHome extends JDialog {
 
@@ -22,6 +28,8 @@ public class PatternGameHome extends JDialog {
 
 
     JSpinner questionsSpinner;
+
+
 
     public PatternGameHome(JFrame parent){
         super(parent, "Wzorce", true);
@@ -65,6 +73,12 @@ public class PatternGameHome extends JDialog {
         score.setForeground(Color.BLACK);
         score.setPreferredSize(new Dimension(140, 55));
         score.setFocusable(false);
+        score.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ModelScore.ScoreView(parent, PatternGame.scores);
+            }
+        });
 
         rightPanel.add(score);
 

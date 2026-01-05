@@ -1,9 +1,13 @@
 package MiniPatternGame;
 
+import ModelScore.ScoreView;
+import ModelScore.EntryScore;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PatternGame extends JDialog {
 
@@ -22,6 +26,8 @@ public class PatternGame extends JDialog {
     private JLabel scoreLabel;
     private JLabel instructionLabel;
     private JLabel sequenceLabel;
+
+    public static List<EntryScore> scores = new ArrayList<>();
 
     private JButton[] answerButtons;
 
@@ -199,6 +205,7 @@ public class PatternGame extends JDialog {
 
     private void showFinalScore() {
         double percentage = (score * 100.0) / totalQuestions;
+        scores.add(new EntryScore("Lukasz", score, difficulty));
         String message = String.format(
                 "Koniec gry!\n\nTwój wynik: %d/%d\nProcent: %.1f%%",
                 score, totalQuestions, percentage
@@ -206,13 +213,39 @@ public class PatternGame extends JDialog {
 
         String title = "Wynik końcowy";
 
-        JOptionPane.showMessageDialog(
+        JPanel panel = new JPanel(new BorderLayout(5,5));
+        JLabel label = new JLabel("Podaj swoje imię:");
+        JTextField nameField = new JTextField(15);
+
+        panel.add(label, BorderLayout.NORTH);
+        panel.add(nameField, BorderLayout.CENTER);
+
+        int choice = JOptionPane.showConfirmDialog(
                 this,
-                message,
-                title,
-                JOptionPane.INFORMATION_MESSAGE
+                panel,
+                "Czy chcesz zapisać wynik?",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
         );
 
+        if (choice == JOptionPane.YES_OPTION) {
+            String playerName = nameField.getText().trim();
+
+            if (playerName.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Imię nie może być puste!",
+                        "Błąd",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+
+
+            scores.add(new EntryScore(playerName, score,difficulty));
+            JOptionPane.showMessageDialog(this, "Wynik zapisany!");
+
+        }
         dispose();
     }
 }
