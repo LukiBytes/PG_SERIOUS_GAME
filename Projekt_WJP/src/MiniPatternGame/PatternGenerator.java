@@ -2,11 +2,26 @@ package MiniPatternGame;
 
 import java.util.Random;
 
+/**
+ * Generator pytań dla gry Wzorce.
+ * Tworzy sekwencje arytmetyczne dostosowane do poziomu trudności.
+ */
 public class PatternGenerator {
 
     Random random = new Random();
 
+    /**
+     * Generuje sekwencję arytmetyczną.
+     * Parametry sekwencji zależą od poziomu trudności:
+     * - Łatwy, liczby 1-10, różnica 2-5
+     * - Średni, liczby 5-20, różnica 3-10
+     * - Trudny, liczby 10-50, różnica 5-15
+     *
+     * @param difficulty poziom trudności (1-łatwy, 2-średni, 3-trudny)
+     * @return pytanie z sekwencją arytmetyczną
+     */
     public Pattern generateArithmetic(int difficulty) {
+
 
         int length = 4;
         int minFirst, maxFirst;
@@ -49,6 +64,15 @@ public class PatternGenerator {
         return new Pattern(fullSequence, hiddenIndex, difficulty);
     }
 
+
+    /**
+     * Generuje pytanie odpowiednie dla danego poziomu trudności.
+     * Na razie obsługuje tylko sekwencje arytmetyczne, ale istnieje
+     * łatwa możliwość dodania różnych innych sekwencji np. ciągi
+     * geometryczne lub Fibbonaciego
+     * @param difficulty poziom trudności (1-3)
+     * @return wygenerowane pytanie
+     */
     public Pattern generatePattern(int difficulty) {
 
         int draw;
