@@ -9,28 +9,62 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+
+/**
+ * Okno menu głównego gry Wzorce.
+ * Pozwala graczowi wybrać poziom trudności (łatwy/średni/trudny),
+ * liczbę pytań (5-30) oraz wyświetlić listę wyników.
+ *
+ */
 public class PatternGameHome extends JDialog {
 
+    /** Panel główny zawierający wszystkie elementy */
     JPanel gamePanel;
+
+    /** Panel górny z przyciskami nawigacji i tytułem */
     JPanel topPanel;
+
+    /** Panel centralny z opcjami gry */
     JPanel centerPanel;
+
+    /** Label z tytułem gry */
     JLabel titleLabel;
+
+    /** Label z instrukcją dla gracza */
     JLabel instructionLabel;
+
+    /** Przycisk powrotu do menu głównego */
     JButton back;
+
+    /** Przycisk uruchamiający grę */
     JButton start;
+
+    /** Przycisk wyświetlający listę wyników */
     JButton score;
 
-
+    /** Radio button dla poziomu łatwego */
     JRadioButton easyRadio;
+
+    /** Radio button dla poziomu średniego */
     JRadioButton mediumRadio;
+
+    /** Radio button dla poziomu trudnego */
     JRadioButton hardRadio;
+
+    /** Grupa radio buttonów zapewniająca wybór tylko jednej opcji */
     ButtonGroup difficultyGroup;
 
-
+    /** Spinner do wyboru liczby pytań (5-30) */
     JSpinner questionsSpinner;
 
 
-
+    /**
+     * Konstruktor tworzy menu główne gry.
+     * Inicjalizuje wszystkie komponenty interfejsu: przyciski nawigacji,
+     * radio buttony wyboru poziomu, spinner liczby pytań i przycisk START.
+     *
+     * @param parent okno nadrzędne (JFrame)
+     * */
     public PatternGameHome(JFrame parent){
         super(parent, "Wzorce", true);
 
@@ -184,7 +218,7 @@ public class PatternGameHome extends JDialog {
         start.setFocusable(false);
         start.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-
+        
         start.addActionListener(e -> {
             int difficulty;
             int questions = (int) questionsSpinner.getValue();

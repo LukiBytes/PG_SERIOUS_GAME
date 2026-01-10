@@ -1,36 +1,75 @@
 package MiniPatternGame;
 
-import ModelScore.ScoreView;
+
 import ModelScore.EntryScore;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
+
+/**
+ * Główne okno gry Wzorce.
+ * Wyświetla sekwencje liczbowe z ukrytym elementem i sprawdza odpowiedzi gracza.
+ * Gra obsługuje trzy poziomy trudności oraz zmienną liczbę pytań.
+ *
+ */
 public class PatternGame extends JDialog {
 
+    /** Lista wszystkich pytań w bieżącej rozgrywce */
     private List<Pattern> questions;
+
+    /** Indeks aktualnie wyświetlanego pytania (0-based) */
     private int currentQuestionIndex;
+
+    /** Liczba poprawnych odpowiedzi gracza */
     private int score;
+
+    /** Poziom trudności: 1-łatwy, 2-średni, 3-trudny */
     private int difficulty;
+
+    /** Całkowita liczba pytań w grze (5-30) */
     private int totalQuestions;
 
+    /** Panel główny zawierający wszystkie elementy interfejsu */
     private JPanel gamePanel;
+
+    /** Panel górny z licznikiem pytań i wynikiem */
     private JPanel topPanel;
+
+    /** Panel centralny z pytaniem i sekwencją */
     private JPanel centerPanel;
+
+    /** Panel dolny z przyciskami odpowiedzi */
     private JPanel bottomPanel;
 
+    /** Label wyświetlający numer bieżącego pytania (np. "Pytanie: 3/10") */
     private JLabel questionNumberLabel;
+
+    /** Label wyświetlający aktualny wynik (np. "Wynik: 7/10") */
     private JLabel scoreLabel;
+
+    /** Label z instrukcją dla gracza */
     private JLabel instructionLabel;
+
+    /** Label wyświetlający sekwencję liczb z ukrytym elementem */
     private JLabel sequenceLabel;
 
+    /** Statyczna lista przechowująca wszystkie wyniki graczy */
     public static List<EntryScore> scores = new ArrayList<>();
 
+    /** Tablica 4 przycisków z opcjami odpowiedzi */
     private JButton[] answerButtons;
 
+    /**
+     * Konstruktor tworzy nową grę z określonymi parametrami.
+     * Inicjalizuje interfejs, generuje pytania i wyświetla pierwsze pytanie.
+     *
+     * @param parent okno nadrzędne (JFrame)
+     * @param difficulty poziom trudności (1-łatwy, 2-średni, 3-trudny)
+     * @param questions liczba pytań w grze (5-30)
+     */
     public PatternGame(JFrame parent, int difficulty, int questions) {
         super(parent, "Wzorce - Gra", true);
 
@@ -51,6 +90,11 @@ public class PatternGame extends JDialog {
         setVisible(true);
     }
 
+    /**
+     * Inicjalizuje wszystkie komponenty interfejsu użytkownika.
+     * Tworzy panele: górny (liczniki), centralny (pytanie), dolny (przyciski odpowiedzi).
+     * Ustawia fonty, kolory i layout wszystkich elementów.
+     */
     private void initializeUI() {
         gamePanel = new JPanel(new BorderLayout());
         gamePanel.setBackground(new Color(230, 230, 230));
@@ -119,6 +163,11 @@ public class PatternGame extends JDialog {
         add(gamePanel);
     }
 
+
+    /**
+     * Generuje określoną liczbę pytań za pomocą PatternGenerator.
+     * Pytania są dostosowane do wybranego poziomu trudności.
+     */
     private void generateQuestions() {
         PatternGenerator generator = new PatternGenerator();
         questions = new ArrayList<>();
@@ -129,15 +178,25 @@ public class PatternGame extends JDialog {
         }
     }
 
+    /**
+     * Wyświetla pytanie o podanym indeksie.
+     * Aktualizuje licznik pytań, wynik, sekwencję liczb i przyciski odpowiedzi.
+     * Resetuje kolory przycisków do stanu początkowego (białe).
+     *
+     * @param index indeks pytania do wyświetlenia (0-based)
+     */
     private void displayQuestion(int index) {
         Pattern currentPattern = questions.get(index);
 
+        //aktualizacja licznika
         questionNumberLabel.setText("Pytanie: " + (index + 1) + "/" + totalQuestions);
         scoreLabel.setText("Wynik: " + score + "/" + totalQuestions);
 
         int[] fullSequence = currentPattern.getFullSequence();
         int hiddenIndex = currentPattern.getHiddenIndex();
 
+
+        //sekwencja z ukrytym elementem (?)
         StringBuilder sequenceText = new StringBuilder();
 
         for (int i = 0; i < fullSequence.length; i++) {
@@ -154,6 +213,7 @@ public class PatternGame extends JDialog {
 
         sequenceLabel.setText(sequenceText.toString());
 
+        //opcje odpowiedzi na przyciskach
         int[] answers = currentPattern.getAnswerOptions();
 
         for (int i = 0; i < 4; i++) {
@@ -167,6 +227,14 @@ public class PatternGame extends JDialog {
         }
     }
 
+    /**
+     * Sprawdza poprawność wybranej odpowiedzi.
+     * Koloruje kliknięty przycisk na zielono (poprawna) lub czerwono (błędna).
+     * W przypadku błędu pokazuje także poprawną odpowiedź (zielony).
+     * Po 2 sekundach automatycznie przechodzi do następnego pytania.
+     *
+     * @param buttonIndex indeks klikniętego przycisku (0-3)
+     */
     private void checkAnswer(int buttonIndex) {
         Pattern currentPattern = questions.get(currentQuestionIndex);
         boolean correct = currentPattern.checkAnswer(buttonIndex);
@@ -193,6 +261,11 @@ public class PatternGame extends JDialog {
         timer.start();
     }
 
+    /**
+     * Przechodzi do następnego pytania lub kończy grę.
+     * Jeśli są jeszcze pytania, wyświetla następne.
+     * W przeciwnym razie wywołuje metodę showFinalScore().
+     */
     private void nextQuestion() {
         currentQuestionIndex++;
 
@@ -203,6 +276,14 @@ public class PatternGame extends JDialog {
         }
     }
 
+    //TODO
+    /**
+     * Wyświetla końcowy wynik gry i pyta gracza o zapisanie wyniku.
+     * Oblicza procent poprawnych odpowiedzi.
+     * Jeśli gracz wybierze "Tak", zapisuje wynik z podanym imieniem do listy scores.
+     * Waliduje czy imię nie jest puste.
+     * Na końcu zamyka okno gry.
+     */
     private void showFinalScore() {
         double percentage = (score * 100.0) / totalQuestions;
         scores.add(new EntryScore("Lukasz", score, difficulty));
