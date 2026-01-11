@@ -286,7 +286,6 @@ public class PatternGame extends JDialog {
      */
     private void showFinalScore() {
         double percentage = (score * 100.0) / totalQuestions;
-        scores.add(new EntryScore("Lukasz", score, difficulty));
         String message = String.format(
                 "Koniec gry!\n\nTwój wynik: %d/%d\nProcent: %.1f%%",
                 score, totalQuestions, percentage

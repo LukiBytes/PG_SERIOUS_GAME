@@ -218,7 +218,7 @@ public class PatternGameHome extends JDialog {
         start.setFocusable(false);
         start.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        
+
         start.addActionListener(e -> {
             int difficulty;
             int questions = (int) questionsSpinner.getValue();
